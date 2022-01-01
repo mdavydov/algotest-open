@@ -101,10 +101,10 @@
 		38A0CE722780A46B007E9F40 /* mathutils */ = {
 			isa = PBXGroup;
 			children = (
-				38A0CE732780A46B007E9F40 /* algotest_tensor_tests.cpp */,
-				38A0CE742780A46B007E9F40 /* algotest_tensor_impl.h */,
-				38A0CE752780A46B007E9F40 /* algotest_tensor.h */,
 				38EDBC8A2780EB0200CCB207 /* algotest_data_holder.h */,
+				38A0CE742780A46B007E9F40 /* algotest_tensor_impl.h */,
+				38A0CE732780A46B007E9F40 /* algotest_tensor_tests.cpp */,
+				38A0CE752780A46B007E9F40 /* algotest_tensor.h */,
 			);
 			path = mathutils;
 			sourceTree = "<group>";
