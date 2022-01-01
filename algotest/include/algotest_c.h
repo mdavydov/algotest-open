@@ -47,6 +47,10 @@
 
 #ifndef __APPLE__
 
+#ifdef _MSC_VER
+#define __printflike(fmtarg, firstvararg)
+#endif
+
 #ifndef __printflike
 #define __printflike(fmtarg, firstvararg) \
 		__attribute__((__format__ (__printf__, fmtarg, firstvararg)))

@@ -18,8 +18,10 @@
 #ifndef algotest_tensor_included
 #define algotest_tensor_included
 
-#include "algotest_tensor_impl.h"
+#include <algorithm>
 //#include <concepts>
+
+#include "algotest_tensor_impl.h"
 
 /**
  @brief const_holder class is used to implement const semantics for returned objects
@@ -729,6 +731,11 @@ namespace algotest
             T i = 0, min = min_ref, max = max_ref;
             res.apply( [&i, min, max, size](T& t) {t = min + (max-min)*T(i++)/(size-1);} );
             return res;
+        }
+
+        static tensor zeros(const tensor_shape& s)
+        {
+            return tensor(s, initializer(T(0)));
         }
         
         tensor meshgrid(const tensor& other)
