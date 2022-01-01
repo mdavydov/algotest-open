@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "algotest_c.h"
-#include "system_utils.h"
+//#include "system_utils.h"
 #ifdef ANDROID_NDK
 #include <android/log.h>
 #ifdef LOG_IN_FILE

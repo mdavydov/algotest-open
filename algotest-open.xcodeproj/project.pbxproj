@@ -11,9 +11,6 @@
 		38A0CE772780A46B007E9F40 /* algotest_log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A0CE6F2780A46A007E9F40 /* algotest_log.cpp */; };
 		38A0CE792780A46B007E9F40 /* algotest_tensor_tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A0CE732780A46B007E9F40 /* algotest_tensor_tests.cpp */; };
 		38A0CE7B2780A48A007E9F40 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A0CE7A2780A48A007E9F40 /* main.cpp */; };
-		38A0CE8C2780AB19007E9F40 /* system_utils_unix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A0CE812780A5A0007E9F40 /* system_utils_unix.cpp */; };
-		38A0CE8D2780AC08007E9F40 /* system_utils_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A0CE882780A692007E9F40 /* system_utils_common.cpp */; };
-		38A0CE902780AC70007E9F40 /* ConvertUTF.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38A0CE8E2780AC70007E9F40 /* ConvertUTF.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,20 +37,7 @@
 		38A0CE742780A46B007E9F40 /* algotest_tensor_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = algotest_tensor_impl.h; sourceTree = "<group>"; };
 		38A0CE752780A46B007E9F40 /* algotest_tensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = algotest_tensor.h; sourceTree = "<group>"; };
 		38A0CE7A2780A48A007E9F40 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		38A0CE7D2780A5A0007E9F40 /* system_utils_threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_threads.h; sourceTree = "<group>"; };
-		38A0CE7E2780A5A0007E9F40 /* stlutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stlutil.h; sourceTree = "<group>"; };
-		38A0CE7F2780A5A0007E9F40 /* system_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils.h; sourceTree = "<group>"; };
-		38A0CE802780A5A0007E9F40 /* system_utils_windows.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system_utils_windows.cpp; sourceTree = "<group>"; };
-		38A0CE812780A5A0007E9F40 /* system_utils_unix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system_utils_unix.cpp; sourceTree = "<group>"; };
-		38A0CE822780A5A0007E9F40 /* system_utils_strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_strings.h; sourceTree = "<group>"; };
-		38A0CE852780A692007E9F40 /* system_utils_logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_logger.h; sourceTree = "<group>"; };
-		38A0CE862780A692007E9F40 /* system_utils_memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_memory.h; sourceTree = "<group>"; };
-		38A0CE872780A692007E9F40 /* system_utils_files.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_files.h; sourceTree = "<group>"; };
-		38A0CE882780A692007E9F40 /* system_utils_common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system_utils_common.cpp; sourceTree = "<group>"; };
-		38A0CE892780A692007E9F40 /* system_utils_performance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_performance.h; sourceTree = "<group>"; };
-		38A0CE8A2780A692007E9F40 /* system_utils_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system_utils_exception.h; sourceTree = "<group>"; };
-		38A0CE8E2780AC70007E9F40 /* ConvertUTF.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConvertUTF.cpp; sourceTree = "<group>"; };
-		38A0CE8F2780AC70007E9F40 /* ConvertUTF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertUTF.h; sourceTree = "<group>"; };
+		38EDBC8A2780EB0200CCB207 /* algotest_data_holder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = algotest_data_holder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +56,6 @@
 			children = (
 				38A0CE672780A46A007E9F40 /* algotest */,
 				38A0CE722780A46B007E9F40 /* mathutils */,
-				38A0CE7C2780A5A0007E9F40 /* sysutils */,
 				38A0CE7A2780A48A007E9F40 /* main.cpp */,
 				38A0CE5E2780A24A007E9F40 /* Products */,
 			);
@@ -121,29 +104,9 @@
 				38A0CE732780A46B007E9F40 /* algotest_tensor_tests.cpp */,
 				38A0CE742780A46B007E9F40 /* algotest_tensor_impl.h */,
 				38A0CE752780A46B007E9F40 /* algotest_tensor.h */,
+				38EDBC8A2780EB0200CCB207 /* algotest_data_holder.h */,
 			);
 			path = mathutils;
-			sourceTree = "<group>";
-		};
-		38A0CE7C2780A5A0007E9F40 /* sysutils */ = {
-			isa = PBXGroup;
-			children = (
-				38A0CE8E2780AC70007E9F40 /* ConvertUTF.cpp */,
-				38A0CE8F2780AC70007E9F40 /* ConvertUTF.h */,
-				38A0CE882780A692007E9F40 /* system_utils_common.cpp */,
-				38A0CE8A2780A692007E9F40 /* system_utils_exception.h */,
-				38A0CE872780A692007E9F40 /* system_utils_files.h */,
-				38A0CE852780A692007E9F40 /* system_utils_logger.h */,
-				38A0CE862780A692007E9F40 /* system_utils_memory.h */,
-				38A0CE892780A692007E9F40 /* system_utils_performance.h */,
-				38A0CE7D2780A5A0007E9F40 /* system_utils_threads.h */,
-				38A0CE7E2780A5A0007E9F40 /* stlutil.h */,
-				38A0CE7F2780A5A0007E9F40 /* system_utils.h */,
-				38A0CE802780A5A0007E9F40 /* system_utils_windows.cpp */,
-				38A0CE812780A5A0007E9F40 /* system_utils_unix.cpp */,
-				38A0CE822780A5A0007E9F40 /* system_utils_strings.h */,
-			);
-			path = sysutils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -204,12 +167,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A0CE792780A46B007E9F40 /* algotest_tensor_tests.cpp in Sources */,
-				38A0CE8D2780AC08007E9F40 /* system_utils_common.cpp in Sources */,
-				38A0CE8C2780AB19007E9F40 /* system_utils_unix.cpp in Sources */,
 				38A0CE762780A46B007E9F40 /* algotest_tests.cpp in Sources */,
 				38A0CE7B2780A48A007E9F40 /* main.cpp in Sources */,
 				38A0CE772780A46B007E9F40 /* algotest_log.cpp in Sources */,
-				38A0CE902780AC70007E9F40 /* ConvertUTF.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

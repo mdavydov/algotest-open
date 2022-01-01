@@ -15,9 +15,9 @@
  
  */
 #include "algotest_tests.h"
+#include "algotest_c.h"
 #include <stdlib.h>
 #include <vector>
-#include "algotest_c.h"
 
 namespace algotest
 {

@@ -18,15 +18,13 @@
 #ifndef algotest_tensor_impl_included
 #define algotest_tensor_impl_included
 
+#include "algotest_c.h"
 #include <math.h>
 #include <initializer_list>
 #include <type_traits>
 #include <ostream>
 #include <memory>
 #include <functional>
-
-#include "stlutil.h"
-
 
 namespace algotest
 {
