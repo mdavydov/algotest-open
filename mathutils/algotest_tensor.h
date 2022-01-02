@@ -674,7 +674,14 @@ namespace algotest
         {
             return tensor(s, initializer(T(0)));
         }
-        
+
+        static tensor ones(const tensor_shape& s)
+        {
+            return tensor(s, initializer(T(1)));
+        }
+
+
+
         tensor meshgrid(const tensor& other)
         {
             ASSERT(numDimensions()==1 && other.numDimensions()==1);
