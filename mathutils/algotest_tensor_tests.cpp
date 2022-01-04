@@ -59,7 +59,7 @@ DECLARE_TEST(Tensor_InitTest)
     //tensor<float> t7 =
     //t6.slice( 2, 3, 4, std::initializer_list<int>{3,5} );
     
-    auto t7 = tensor<int>::arange(30);
+    auto t7 = tensor<int>::arange(0,30,1);
     LOGI_(t7);
     LOGI_(t7.trim({5}));
     LOGI_(t7.trimTail({5}));

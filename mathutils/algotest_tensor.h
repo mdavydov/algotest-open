@@ -654,14 +654,14 @@ namespace algotest
             return res;
         }
         
-        static tensor arange(index_type size)
+        static tensor arange(T from, const T to, const T step)
         {
-            tensor res({size});
-            T i = 0;
-            res.apply( [&i](T& t) {t = i++;} );
+            ASSERT(step != 0);
+            tensor res({ index_type(abs(to - from) / step) + 1 });
+            res.apply([&from, step](T& t) {t = from; from += step; });
             return res;
         }
-        
+
         static tensor linspace(const T& min_ref, const T& max_ref, index_type size)
         {
             tensor res({size});
@@ -679,6 +679,7 @@ namespace algotest
         {
             return tensor(s, initializer(T(1)));
         }
+
 
 
 
