@@ -7,11 +7,134 @@
 //
 
 #include "algotest_tests.h"
-//#include "algotest_timer.h"
+#include "algotest_timer.h"
 #include "algotest_tensor.h"
 
 using namespace algotest;
 
+DECLARE_TEST(Tensor_crop_test)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    a = a.reshape( {2,5} );
+    a.crop( {1,1}, {2, -1} ) = tensor<int>::scalar(0);
+    TEST_ASSERT( a == tensor<int>::matrix( { { 0, 1, 2, 3, 4 },
+                                             { 5, 0, 0, 0, 9 } } ) );
+}
+
+DECLARE_TEST(Tensor_index_select)
+{
+    tensor<int> a = tensor<int>::arange(12);
+    a = a.reshape( {3,4} );
+    
+    TEST_ASSERT( a == tensor<int>::matrix( { { 0, 1,  2,  3 },
+                                             { 4, 5,  6,  7 },
+                                             { 8, 9, 10, 11 } } ) );
+    
+    TEST_ASSERT(a.index_select(0, {1,2}) == tensor<int>::matrix( { { 4, 5,  6,  7 },
+                                                                   { 8, 9, 10, 11 } } ) );
+    
+    
+    TEST_ASSERT(a.index_select(1, {1,-1}) ==
+                tensor<int>::matrix( { { 1,  3 },
+                                       { 5,  7 },
+                                       { 9, 11 } } ) );
+
+}
+
+DECLARE_TEST(Tensor_split_axis)
+{
+    tensor<int> a = tensor<int>::arange(12);
+    a = a.reshape( {3,4} );
+    
+    TEST_ASSERT( a == tensor<int>::matrix( { { 0, 1,  2,  3 },
+                                             { 4, 5,  6,  7 },
+                                             { 8, 9, 10, 11 } } ) );
+    
+    TEST_ASSERT(a.splitAxis(1, 2) ==
+                tensor<int>::matrix3D( { { {0, 1},  {2,  3} },
+                                         { {4, 5},  {6,  7} },
+                                         { {8, 9}, {10, 11} } }) );
+    
+    tensor<int> b = tensor<int>::arange(12);
+    b = b.reshape( {4,3} );
+    TEST_ASSERT( b.splitAxis(0, 2)
+                == tensor<int>::matrix3D( { {{0, 1, 2},
+                                             {3, 4, 5}},
+                                            {{6, 7, 8},
+                                             {9, 10, 11}} } ) );
+}
+
+DECLARE_TEST(Tensor_interpolateByAxisNearest)
+{
+    tensor<int> a = tensor<int>::arange(12);
+    a = a.reshape( {3,4} );
+    
+    TEST_ASSERT( a == tensor<int>::matrix( { { 0, 1,  2,  3 },
+                                             { 4, 5,  6,  7 },
+                                             { 8, 9, 10, 11 } } ) );
+    
+    TEST_ASSERT(a.interpolateByAxisNearest(0, 1) ==
+                tensor<int>::matrix( { { 4, 5, 6, 7 } } ) );
+    
+    TEST_ASSERT(a.interpolateByAxisNearest(0, 3) == a );
+    
+    TEST_ASSERT(a.interpolateByAxisNearest(0, 4).shape == tensor_shape({4,4}));
+    TEST_ASSERT(a.interpolateByAxisNearest(0, 5).shape == tensor_shape({5,4}));
+    TEST_ASSERT(a.interpolateByAxisNearest(0, 6) ==
+        tensor<int>::matrix( {  { 0, 1, 2, 3 },
+                                { 0, 1, 2, 3 },
+                                { 4, 5, 6, 7 },
+                                { 4, 5, 6, 7 },
+                                { 8, 9, 10, 11 },
+                                { 8, 9, 10, 11 } } ) );
+    
+    TEST_ASSERT(a.interpolateByAxisNearest(1, 1).shape == tensor_shape({3,1}));
+    TEST_ASSERT(a.interpolateByAxisNearest(1, 2).shape == tensor_shape({3,2}));
+    TEST_ASSERT(a.interpolateByAxisNearest(1, 3).shape == tensor_shape({3,3}));
+    TEST_ASSERT(a.interpolateByAxisNearest(1, 4) == a);
+}
+
+DECLARE_TEST(Tensor_slice_test)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    
+    TEST_ASSERT( a.slice({{7, .n=2}}) == tensor<int>::array({7,8}) );
+    TEST_ASSERT( a.slice({{7, .n=3, .step=2}}) == tensor<int>::array({7,9}) );
+    TEST_ASSERT( a.slice({{7, .n=2, .step=-1}}) == tensor<int>::array({7,6}) );
+    TEST_ASSERT( a.slice({{7, .n=10, .step=-2}}) == tensor<int>::array({7,5,3,1}) );
+    
+    TEST_ASSERT( a.slice({{.i=7}}) == tensor<int>::array({7}) );
+    TEST_ASSERT( a.slice({{.i=-1}}) == tensor<int>::array({9}) );
+    TEST_ASSERT( a.slice({{.i=-10}}) == tensor<int>::array({0}) );
+    
+    a = a.reshape( {2,5} );
+    a.slice({ {1}, {1,-1} }) = 0;
+    TEST_ASSERT( a == tensor<int>::matrix( { { 0, 1, 2, 3, 4 },
+                                             { 5, 0, 0, 0, 9 } } ) );
+    
+    tensor<int> b = tensor<int>::arange(20).reshape( {4,5} );
+    b.slice({ {0,-1}, {.step=2} }) = 0;
+    TEST_ASSERT( b == tensor<int>::matrix({{ 0, 1, 0, 3, 0 },
+                                           { 0, 6, 0, 8, 0 },
+                                           { 0, 11, 0, 13, 0 },
+                                           { 15, 16, 17, 18, 19 }}));
+    
+    tensor<int> c = tensor<int>::arange(20).reshape( {4,5} );
+    c.slice({ {0,-1}, {4,.step=-2} }) = 0;
+    TEST_ASSERT( c == tensor<int>::matrix({{ 0, 1, 0, 3, 0 },
+                                           { 0, 6, 0, 8, 0 },
+                                           { 0, 11, 0, 13, 0 },
+                                           { 15, 16, 17, 18, 19 }}));
+}
+
+DECLARE_TEST(Tensor_reshape)
+{
+    TEST_ASSERT( tensor<float>({1,1,81}).canReshapeTo({9,9}) );
+    TEST_ASSERT( tensor<float>({1,1,1, 81, 1}).canReshapeTo({9,9}) );
+    TEST_ASSERT( tensor<float>({1,81, 1, 1, 9}).canReshapeTo({9,9,9}) );
+    TEST_ASSERT( tensor<float>({1,81, 1, 1, 9}).canReshapeTo({9,3,3,9}) );
+    TEST_ASSERT( tensor<float>({1,81, 1, 1, 9}).canReshapeTo({9,3,27}) );
+}
 
 DECLARE_TEST(Tensor_InitTest)
 {
@@ -30,6 +153,25 @@ DECLARE_TEST(Tensor_InitTest)
     tf0.apply( [](float&f) {f=0;} );
     tf2.apply( [](float&f) {f=1;} );
     tf3.apply( [](float&f) {f=2;} );
+    
+    {
+        START_TIMER("Tensor speed test");
+        
+        tensor<float> tfbig1( {1000,100,100,5,2}, initializer(2.0f) );
+        NOTIFY_TIME("Init");
+        
+        auto res = tfbig1 + tfbig1;
+        NOTIFY_TIME("Sum");
+
+        tensor<float> tfbig3( {1000,100,100,5,2} );
+        int n = tfbig3.numElements();
+        float* data = tfbig3.data();
+        for( int i = 0; i<n;++i) data[i] = float(i);
+        NOTIFY_TIME("Linear cycle");
+        
+        for( int i = 0; i<n;++i) data[i] = 2.0f;
+        NOTIFY_TIME("Linear initialization");
+    }
     
     // Create tensor
     tensor<float> t1( {1000,100}, initializer(2.0f) );
@@ -59,7 +201,7 @@ DECLARE_TEST(Tensor_InitTest)
     //tensor<float> t7 =
     //t6.slice( 2, 3, 4, std::initializer_list<int>{3,5} );
     
-    auto t7 = tensor<int>::arange(0,30,1);
+    auto t7 = tensor<int>::arange(30);
     LOGI_(t7);
     LOGI_(t7.trim({5}));
     LOGI_(t7.trimTail({5}));
@@ -74,8 +216,6 @@ DECLARE_TEST(Tensor_InitTest)
     t9.crop({3,3},{5,5}).copy().init(0);
     LOGI_(t9);
       
-    STOP_TESTS();
-    
     auto t8 = t7.reshape({5,3,2});
 
     LOGI_(t8.trim({3,2,1}));
@@ -88,6 +228,172 @@ DECLARE_TEST(Tensor_InitTest)
 
     //copy tensor()
 }
+
+DECLARE_TEST(Tensor_destroyAxis)
+{
+    auto t = tensor<float>::matrix( { {0,1,2},
+                                      {3,4,5} } );
+    TEST_ASSERT( t.destroyAxis(0,0) ==  tensor<float>::array( {0,1,2} ));
+    TEST_ASSERT( t.destroyAxis(1,1) ==  tensor<float>::array( {1,4} ));
+}
+
+DECLARE_TEST(Tensor_patial_product_sum)
+{
+    auto t1 = tensor<float>::matrix({   {1,0,0},
+                                        {0,1,0},
+                                        {0,0,1},
+                                        {1,1,1} } );
+    
+    auto t2 = tensor<float>::matrix({   {2,0,0},
+                                        {0,1,0},
+                                        {0,0,2},
+                                        {1,2,1} } );
+    auto res = tensor<float>::matrix({ { 2, 0, 0, 2 },
+                                       { 0, 1, 0, 1 },
+                                       { 0, 0, 2, 2 },
+                                       { 1, 2, 1, 4 } });
+
+    
+    ASSERT( t1.insertAxis(0, 4).partial_product_sum(t2.insertAxis(1, 4), 1)==res);
+}
+
+DECLARE_TEST(Tensor_matmul)
+{
+    auto t1 = tensor<float>::matrix({   {1,0,0},
+                                        {0,1,3} } );
+    
+    auto t2 = tensor<float>::matrix({   {2,0,0,1},
+                                        {0,1,0,1},
+                                        {0,0,2,0} } );
+    
+    auto res = tensor<float>::matrix({ { 2, 0, 0, 1 },
+                                       { 0, 1, 6, 1 } });
+
+    
+    ASSERT( t1.matmul(t2)==res);
+}
+
+DECLARE_TEST(Tensor_crop)
+{
+    tensor<float> t = tensor<float>::arange(30).reshape({5,6});
+    TEST_ASSERT(t.crop({0,0}, {3,2}) == tensor<float>::matrix( {{ 0, 1},
+                                                                { 6, 7},
+                                                                {12,13} }));
+    
+    TEST_ASSERT(t.crop({2,2}, t.shape) == tensor<float>::matrix( {{14,15,16,17},
+                                                                  {20,21,22,23},
+                                                                  {26,27,28,29} }));
+}
+
+DECLARE_TEST(Tensor_axis_revert)
+{
+    tensor<float> t = tensor<float>::matrix( {{ 0, 1},
+                                              { 6, 7},
+                                              {12,13} });
+    TEST_ASSERT(t.flip(0) == tensor<float>::matrix( {{12,13},
+                                                     { 6, 7},
+                                                     { 0, 1} }) );
+    TEST_ASSERT(t.flip(1) == tensor<float>::matrix( {{ 1, 0},
+                                                     { 7, 6},
+                                                     {13,12} }) );
+
+}
+
+DECLARE_TEST(Tensor_axis_extension)
+{
+    auto a = tensor<float>::arange(4).reshape({1,4});
+    auto b = tensor<float>::arange(4).reshape({4,1});
+    TEST_ASSERT( ((a*b)[{3,3}] == 9) );
+    TEST_ASSERT( ((a/(b+1))[{1,2}] == 1) );
+    TEST_ASSERT( ((a+b)[{3,2}]==5) );
+    TEST_ASSERT( ((a-b)[{3,2}]==-1) );
+}
+
+DECLARE_TEST(Tensor_max)
+{
+    tensor<float> test = tensor<float>::matrix({ {3, 2, 1},
+                                                 {4, 7, 5} } );
+    
+    TEST_ASSERT(test.max(1) == tensor<float>::array({3,7}) );
+    TEST_ASSERT(test.min(1) == tensor<float>::array({1,4}) );
+    
+    TEST_ASSERT(test.max(0) == tensor<float>::array({4,7,5}));
+    TEST_ASSERT(test.min(0) == tensor<float>::array({3,2,1}));
+    
+    TEST_ASSERT(test.max(1).max(0) == tensor<float>::scalar(7));
+    TEST_ASSERT(test.min(1).min(0) == tensor<float>::scalar(1));
+    TEST_ASSERT(test.max()==7);
+    TEST_ASSERT(test.min()==1);
+}
+
+DECLARE_TEST(Tensor_softmax)
+{
+    tensor<float> test = tensor<float>::arange(30).reshape({2,3,5});
+    
+    TEST_ASSERT(test.softmax(0).sum(0).allclose( tensor<float>::scalar(1) ) );
+    TEST_ASSERT(test.softmax(1).sum(1).allclose( tensor<float>::scalar(1) ) );
+    TEST_ASSERT(test.softmax(2).sum(2).allclose( tensor<float>::scalar(1) ) );
+}
+
+DECLARE_TEST(Tensor_window)
+{
+    tensor<int> i = tensor<int>::arange(7);
+    TEST_ASSERT(i == tensor<int>::array({0,1,2,3,4,5,6}));
+    TEST_ASSERT(i.window(0, 2, 2) == tensor<int>::matrix({ { 0, 1 }, { 2, 3 }, { 4, 5 } }) );
+    TEST_ASSERT(i.window(0, 1, 3) == tensor<int>::matrix({{ 0, 1, 2 },
+                                                          { 1, 2, 3 },
+                                                          { 2, 3, 4 },
+                                                          { 3, 4, 5 },
+                                                          { 4, 5, 6 }}) );
+    
+    tensor<int> m = tensor<int>::arange(9).reshape({3,3});
+    TEST_ASSERT(m == tensor<int>::matrix({{ 0, 1, 2 },
+                                          { 3, 4, 5 },
+                                          { 6, 7, 8 }}));
+                
+    tensor<int> mw = m.window(0,1,2).window(1,1,2);
+                
+    TEST_ASSERT(mw.shape == tensor_shape({2,2,2,2}));
+    
+    TEST_ASSERT(mw.subtensor({0,0}) == tensor<int>::matrix({{ 0, 1 },
+                                                            { 3, 4 }}) );
+    TEST_ASSERT(mw.subtensor({0,1}) == tensor<int>::matrix({{ 1, 2 },
+                                                            { 4, 5 }}) );
+    TEST_ASSERT(mw.subtensor({1,0}) == tensor<int>::matrix({{ 3, 4 },
+                                                            { 6, 7 }}) );
+    TEST_ASSERT(mw.subtensor({1,1}) == tensor<int>::matrix({{ 4, 5 },
+                                                            { 7, 8 }}) );
+}
+
+#if 0
+DECLARE_TEST(Tensor_some_test)
+{
+    tensor<float> i = tensor<float>::arange(30).reshape({5,6});
+    LOGI_(i);
+    
+    tensor<float> coords = tensor<float>({3,2});
+    coords[{0,0}] = 0.9; coords[{0,1}] = 0.8;
+    coords[{1,0}] = -0.5; coords[{1,1}] = 2.0;
+    coords[{2,0}] = 4.5; coords[{2,1}] = 10;
+    LOGI_(coords);
+    
+    LOGI_(i.bilinear_sample(coords));
+    
+    NOTIFY_TIME("FNet correlation");
+    
+    LOGI_(i.window(0,2,2).window(1,2,2));
+    auto r = i.window(0,2,2).window(1,2,2).sum_last_axes(2)/4.0f;
+    LOGI_(r);
+    LOGI_(i.avg_pool({0,1}, {2,2}));
+    
+    LOGI_(i.sum());
+    LOGI_(i.sum_last_axes(1));
+    
+    LOGI_(tensor<float>::arange(7).window(0, 2, 3));
+    LOGI_(tensor<float>::arange(7).window(0, 2, 3).sum_last_axes(1));
+}
+#endif
+
 
 #if 0
 DECLARE_TEST(Tensor_SliceTest)
