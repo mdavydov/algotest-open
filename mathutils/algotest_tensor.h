@@ -429,21 +429,26 @@ namespace algotest
         TENSOR_SCALAR_BINARY_OP(<=);
         TENSOR_SCALAR_BINARY_OP(>);
         TENSOR_SCALAR_BINARY_OP(>=);
-
+        
+        #define TENSOR_TENSOR_EQ_OP(_op_) \
+            template<class U> \
+            const vtensor& operator _op_(const vtensor<U>& a) \
+            { \
+                apply(a.upshape(shape), [](T& r, const T& a) {r _op_ a;} ); \
+                return *this; \
+            }
+        
+        TENSOR_TENSOR_EQ_OP(+=);
+        TENSOR_TENSOR_EQ_OP(-=);
+        TENSOR_TENSOR_EQ_OP(*=);
+        TENSOR_TENSOR_EQ_OP(/=);
 
     public: // vtensor/scalar operations
         template<scalar_type U> const vtensor& operator+=(const U& b) { apply( [b](T& a) {a += b;} ); return *this; }
         template<scalar_type U> const vtensor& operator-=(const U& b) { apply( [b](T& a) {a -= b;} ); return *this; }
         template<scalar_type U> const vtensor& operator*=(const U& b) { apply( [b](T& a) {a *= b;} ); return *this; }
         template<scalar_type U> const vtensor& operator/=(const U& b) { apply( [b](T& a) {a /= b;} ); return *this; }
-        
-        template<class U>
-        const vtensor& operator+=(const vtensor<U>& a)
-        {
-            ASSERT(a.shape == shape);
-            apply(a, [](T& r, const T& a) {r += a;} );
-            return *this;
-        }
+
     public:
         
         void makeAxisIndexPositive(int& axis) const
