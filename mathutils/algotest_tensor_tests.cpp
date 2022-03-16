@@ -767,7 +767,7 @@ DECLARE_TEST(DevideEqual_2Dim_int)
 
 DECLARE_TEST(Lesser_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> a = tensor<int>::arange(10);
     tensor<int> b = tensor<int>::ones({10});
     tensor<bool> c = (a<b);
     
@@ -781,7 +781,7 @@ DECLARE_TEST(Lesser_1Dim_1Dim)
 
 DECLARE_TEST(Lesser_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
     tensor<int> b = tensor<int>::ones({5});
     tensor<bool> c = (a<b);
     
@@ -798,7 +798,7 @@ DECLARE_TEST(Lesser_2Dim_1Dim)
 
 DECLARE_TEST(Lesser_1Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5});
+    tensor<int> a = tensor<int>::arange(5);
 
     tensor<bool> c = (a<1);
     
@@ -813,7 +813,7 @@ DECLARE_TEST(Lesser_1Dim_int)
 
 DECLARE_TEST(Lesser_2Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
 
     tensor<bool> c = (a<1);
     
@@ -830,7 +830,7 @@ DECLARE_TEST(Lesser_2Dim_int)
 
 DECLARE_TEST(LesserEqual_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> a = tensor<int>::arange(10);
     tensor<int> b = tensor<int>::ones({10});
     tensor<bool> c = (a<=b);
     
@@ -844,7 +844,7 @@ DECLARE_TEST(LesserEqual_1Dim_1Dim)
 
 DECLARE_TEST(LesserEqual_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
     tensor<int> b = tensor<int>::ones({5});
     tensor<bool> c = (a<=b);
     
@@ -861,7 +861,7 @@ DECLARE_TEST(LesserEqual_2Dim_1Dim)
 
 DECLARE_TEST(LesserEqual_1Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5});
+    tensor<int> a = tensor<int>::arange(5);
 
     tensor<bool> c = (a<=1);
     
@@ -876,7 +876,7 @@ DECLARE_TEST(LesserEqual_1Dim_int)
 
 DECLARE_TEST(LesserEqual_2Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
 
     tensor<bool> c = (a<=1);
     
@@ -893,7 +893,7 @@ DECLARE_TEST(LesserEqual_2Dim_int)
 
 DECLARE_TEST(Greater_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> a = tensor<int>::arange(10);
     tensor<int> b = tensor<int>::ones({10});
     tensor<bool> c = (a>b);
     
@@ -906,7 +906,7 @@ DECLARE_TEST(Greater_1Dim_1Dim)
 
 DECLARE_TEST(Greater_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
     tensor<int> b = tensor<int>::ones({5});
     tensor<bool> c = (a>b);
     
@@ -923,7 +923,7 @@ DECLARE_TEST(Greater_2Dim_1Dim)
 
 DECLARE_TEST(Greater_1Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5});
+    tensor<int> a = tensor<int>::arange(10);
 
     tensor<bool> c = (a>1);
     
@@ -938,7 +938,7 @@ DECLARE_TEST(Greater_1Dim_int)
 
 DECLARE_TEST(Greater_2Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
 
     tensor<bool> c = (a>1);
     
@@ -955,7 +955,7 @@ DECLARE_TEST(Greater_2Dim_int)
 
 DECLARE_TEST(GreaterEqual_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> a = tensor<int>::arange(10);
     tensor<int> b = tensor<int>::ones({10});
     tensor<bool> c = (a>=b);
     
@@ -968,7 +968,7 @@ DECLARE_TEST(GreaterEqual_1Dim_1Dim)
 
 DECLARE_TEST(GreaterEqual_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
     tensor<int> b = tensor<int>::ones({5});
     tensor<bool> c = (a>=b);
     
@@ -985,7 +985,7 @@ DECLARE_TEST(GreaterEqual_2Dim_1Dim)
 
 DECLARE_TEST(GreaterEqual_1Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5});
+    tensor<int> a = tensor<int>::arange(5);
 
     tensor<bool> c = (a>=1);
     
@@ -1000,7 +1000,7 @@ DECLARE_TEST(GreaterEqual_1Dim_int)
 
 DECLARE_TEST(GreaterEqual_2Dim_int)
 {
-    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
 
     tensor<bool> c = (a>=1);
     

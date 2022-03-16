@@ -778,6 +778,13 @@ namespace algotest
             return res;
         }
         
+        static vtensor random(index_type size, T min = 0, T max = 1)
+                {
+                    vtensor res({size});
+                    res.apply( [&min, &max](T& t) {t = ::random(min, max);} );
+                    return res;
+                }
+        
         static vtensor linspace(const T& min_ref, const T& max_ref, index_type size)
         {
             vtensor res({size});

@@ -506,3 +506,19 @@ template<class E> FlagSet<E> flagSet(E e) { return FlagSet<E>(e); }
 template<class E> FlagSet<E> flagSet(std::initializer_list<E> el) { return FlagSet<E>(el); }
 
 #endif //__STLUTILINCLUDED__
+
+
+template<bool is_integer> struct random_range {};
+template<> struct random_range<true>
+{
+    template<class T> static T random(T min, T max) { return rand()%(max-min+1) + min; }
+};
+template<> struct random_range<false>
+{
+    template<class T> static T random(T min, T max) { return min + (max-min)*( T(rand())/T(RAND_MAX) ); }
+};
+
+template<class T>
+inline T random(T from, T to) { return random_range< std::numeric_limits<T>::is_integer >::random(from,to); }
+
+
