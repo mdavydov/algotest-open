@@ -471,3 +471,546 @@ DECLARE_TEST(upper_multiple)
 }
 
 #endif
+
+
+DECLARE_TEST(Minus_1Dim_2Dim)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> c = (b-a);
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+
+    for(int i = 0; i < 5; ++i)
+        for (int j = 0; j < 2; ++j)
+        {
+            ASSERT( (c[{i,j}]) == ( (a[{i,j}]) - (b[{i}])) * -1);
+        }
+}
+
+DECLARE_TEST(Multiple_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    tensor<int> b = tensor<int>::arange(10);
+    tensor<int> c = a*b;
+    ASSERT(c.ndim() == 1);
+    ASSERT(c.shape[0] == a.shape[0]);
+    
+    for(auto i : c.shape.indices())
+    {
+        ASSERT(c[i] == a[i] * b[i]);
+    }
+}
+
+DECLARE_TEST(Multiple_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> c = a*b;
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for (int j = 0; j < 2; ++j)
+        {
+            ASSERT( (c[{i,j}]) == (a[{i,j}]) * (b[{i}]));
+        }
+}
+
+DECLARE_TEST(Multiple_1Dim_2Dim)
+{
+    tensor<int> a = tensor<int>({5,2}, initializer(5));
+    tensor<int> b = tensor<int>({5}, initializer(10));
+    tensor<int> c = b*a;
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+
+    for(int i = 0; i < 5; ++i)
+        for (int j = 0; j < 2; ++j)
+        {
+            ASSERT( (c[{i,j}]) == (b[{i}]) * (a[{i,j}]));
+        }
+}
+
+DECLARE_TEST(Devide_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>({10}, initializer(40));
+    tensor<int> b = tensor<int>({10}, initializer(5));
+    tensor<int> c = a/b;
+    ASSERT(c.ndim() == 1);
+    ASSERT(c.shape[0] == a.shape[0]);
+
+    for(auto i : c.shape.indices())
+    {
+        ASSERT( c[i] == a[i] / b[i] );
+    }
+}
+
+DECLARE_TEST(Devide_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>({5,2}, initializer(40));
+    tensor<int> b = tensor<int>({5}, initializer(5));
+    tensor<int> c = a/b;
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+
+    for(int i = 0; i < 5; ++i)
+        for (int j = 0; j < 2; ++j)
+        {
+            ASSERT( (c[{i,j}]) == (a[{i,j}]) / (b[{i}]));
+        }
+}
+
+DECLARE_TEST(Devide_1Dim_2Dim)
+{
+    tensor<int> a = tensor<int>({5,2}, initializer(5));
+    tensor<int> b = tensor<int>({5}, initializer(10));
+    tensor<int> c = b/a;
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+
+    for(int i = 0; i < 5; ++i)
+        for (int j = 0; j < 2; ++j)
+        {
+            ASSERT( (c[{i,j}]) == (b[{i}]) / (a[{i,j}]));
+        }
+}
+
+DECLARE_TEST(PlusEqual_tensors)
+{
+    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a_copy = a.copy();
+    tensor<int> b = tensor<int>({10,2}, initializer(5));
+    a+=b;
+    
+    
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == b.shape[0]);
+    ASSERT(a.shape[1] == b.shape[1]);
+    for(auto i : a.shape.indices())
+    {
+        ASSERT ( a[i] == a_copy[i] + b[i] );
+    }
+}
+
+DECLARE_TEST(PlusEqual_tensor_int)
+{
+    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a_copy = a.copy();
+
+    a+=5;
+    
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    for(auto i : a.shape.indices())
+    {
+        ASSERT ( a[i] == a_copy[i] + 5 );
+    }
+}
+
+DECLARE_TEST(MinusEqual_tensors)
+{
+    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a_copy = a.copy();
+    tensor<int> b = tensor<int>({10,2}, initializer(5));
+    a-=b;
+    ASSERT(a.ndim() == 2);
+    ASSERT (a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    
+    for (auto i : a.shape.indices())
+    {
+        ASSERT ( a[i] == a_copy[i] - b[i] );
+    }
+}
+
+DECLARE_TEST(MinusEqual_int)
+{
+    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a_copy = a.copy();
+    a-=5;
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    
+    for(auto i : a.shape.indices())
+    {
+        ASSERT ( a[i] == a_copy[i] - 5 );
+    }
+}
+
+DECLARE_TEST(MultipleEqual_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a_copy = a.copy();
+    tensor<int> b = tensor<int>::arange(5);
+    a*=b;
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    for(auto i : a.shape.indices())
+    {
+        ASSERT(a[i] == a_copy[i] * b[i]);
+    }
+}
+
+DECLARE_TEST(MultipleEqual_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a_copy = a.copy();
+    tensor<int> b = tensor<int>::arange(5);
+    a*=b;
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT( (a[{i,j}]) == (a_copy[{i,j}]) * (b[{i}]) );
+        }
+}
+
+DECLARE_TEST(MultipleEqual_1Dim_int)
+{
+    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a_copy = a.copy();
+    a*=5;
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    for(auto i : a.shape.indices())
+    {
+        ASSERT(a[i] == a_copy[i] * 5);
+    }
+}
+
+DECLARE_TEST(MultipleEqual_2Dim_int)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a_copy = a.copy();
+    a*=5;
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT( (a[{i,j}]) == (a_copy[{i,j}]) * 5 );
+        }
+}
+
+DECLARE_TEST(DevideEqual_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a_copy = a.copy();
+    tensor<int> b = tensor<int>::arange(5);
+    a/=b;
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    for(auto i : a.shape.indices())
+    {
+        ASSERT(a[i] == a_copy[i] / b[i]);
+    }
+}
+
+DECLARE_TEST(DevideEqual_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a_copy = a.copy();
+    tensor<int> b = tensor<int>::arange(5);
+    a/=b;
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT( (a[{i,j}]) == (a_copy[{i,j}]) / (b[{i}]) );
+        }
+}
+
+DECLARE_TEST(DevideEqual_1Dim_int)
+{
+    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a_copy = a.copy();
+    a/=5;
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    for(auto i : a.shape.indices())
+    {
+        ASSERT(a[i] == a_copy[i] / 5);
+    }
+}
+
+DECLARE_TEST(DevideEqual_2Dim_int)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a_copy = a.copy();
+    a/=5;
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == a_copy.shape[0]);
+    ASSERT(a.shape[1] == a_copy.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT( (a[{i,j}]) == (a_copy[{i,j}]) / 5 );
+        }
+}
+
+DECLARE_TEST(Lesser_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> b = tensor<int>::ones({10});
+    tensor<bool> c = (a<b);
+    
+    ASSERT(a.ndim() == 1);
+    ASSERT(c.shape[0] == b.shape[0]);
+    for (auto i : c.shape.indices())
+    {
+        ASSERT( c[i] == a[i] < b[i] );
+    }
+}
+
+DECLARE_TEST(Lesser_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> b = tensor<int>::ones({5});
+    tensor<bool> c = (a<b);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) < (b[{i}]));
+        }
+}
+
+DECLARE_TEST(Lesser_1Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5});
+
+    tensor<bool> c = (a<1);
+    
+    ASSERT(c.ndim() == 1);
+    ASSERT(c.shape[0] == a.shape[0]);
+    
+        for(int j = 0; j < 5; ++j)
+        {
+            ASSERT((c[{j}]) == (a[{j}]) < 1 );
+        }
+}
+
+DECLARE_TEST(Lesser_2Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+
+    tensor<bool> c = (a<1);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) < 1 );
+        }
+}
+
+DECLARE_TEST(LesserEqual_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> b = tensor<int>::ones({10});
+    tensor<bool> c = (a<=b);
+    
+    ASSERT(a.ndim() == 1);
+    ASSERT(c.shape[0] == b.shape[0]);
+    for (auto i : c.shape.indices())
+    {
+        ASSERT( c[i] == a[i] <= b[i] );
+    }
+}
+
+DECLARE_TEST(LesserEqual_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> b = tensor<int>::ones({5});
+    tensor<bool> c = (a<=b);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) <= (b[{i}]));
+        }
+}
+
+DECLARE_TEST(LesserEqual_1Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5});
+
+    tensor<bool> c = (a<=1);
+    
+    ASSERT(c.ndim() == 1);
+    ASSERT(c.shape[0] == a.shape[0]);
+    
+        for(int j = 0; j < 5; ++j)
+        {
+            ASSERT((c[{j}]) == (a[{j}]) <= 1 );
+        }
+}
+
+DECLARE_TEST(LesserEqual_2Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+
+    tensor<bool> c = (a<=1);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) <= 1 );
+        }
+}
+
+DECLARE_TEST(Greater_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> b = tensor<int>::ones({10});
+    tensor<bool> c = (a>b);
+    
+    ASSERT(c.shape == b.shape);
+    for (auto i : c.shape.indices())
+    {
+        ASSERT( c[i] == a[i] > b[i] );
+    }
+}
+
+DECLARE_TEST(Greater_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> b = tensor<int>::ones({5});
+    tensor<bool> c = (a>b);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) > (b[{i}]));
+        }
+}
+
+DECLARE_TEST(Greater_1Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5});
+
+    tensor<bool> c = (a>1);
+    
+    ASSERT(c.ndim() == 1);
+    ASSERT(c.shape[0] == a.shape[0]);
+    
+        for(int j = 0; j < 5; ++j)
+        {
+            ASSERT((c[{j}]) == (a[{j}]) > 1 );
+        }
+}
+
+DECLARE_TEST(Greater_2Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+
+    tensor<bool> c = (a>1);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) > 1 );
+        }
+}
+
+DECLARE_TEST(GreaterEqual_1Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({10});
+    tensor<int> b = tensor<int>::ones({10});
+    tensor<bool> c = (a>=b);
+    
+    ASSERT(c.shape == b.shape);
+    for (auto i : c.shape.indices())
+    {
+        ASSERT( c[i] == a[i] >= b[i] );
+    }
+}
+
+DECLARE_TEST(GreaterEqual_2Dim_1Dim)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+    tensor<int> b = tensor<int>::ones({5});
+    tensor<bool> c = (a>=b);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) >= (b[{i}]));
+        }
+}
+
+DECLARE_TEST(GreaterEqual_1Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5});
+
+    tensor<bool> c = (a>=1);
+    
+    ASSERT(c.ndim() == 1);
+    ASSERT(c.shape[0] == a.shape[0]);
+    
+        for(int j = 0; j < 5; ++j)
+        {
+            ASSERT((c[{j}]) == (a[{j}]) >= 1 );
+        }
+}
+
+DECLARE_TEST(GreaterEqual_2Dim_int)
+{
+    tensor<int> a = tensor<int>::zeros({5,2});
+
+    tensor<bool> c = (a>=1);
+    
+    ASSERT(c.ndim() == 2);
+    ASSERT(c.shape[0] == a.shape[0]);
+    ASSERT(c.shape[1] == a.shape[1]);
+    
+    for(int i = 0; i < 5; ++i)
+        for(int j = 0; j < 2; ++j)
+        {
+            ASSERT((c[{i,j}]) == (a[{i,j}]) >= 1 );
+        }
+}
