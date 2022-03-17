@@ -1137,3 +1137,68 @@ DECLARE_TEST(Astype_2Dim_2Dim_float_int)
         ASSERT ( typeid(b[i]) == typeid(int));
     }
 }
+
+DECLARE_TEST(copyValuesFrom_1Dim_1Dim_float_to_int)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    tensor<float> b = tensor<float>({10});
+    float i = 1.5;
+    b.apply([&i](float &a){a = i; i += 2,8;});
+    
+    a.copyValuesFrom(b);
+    ASSERT (a.ndim() == 1);
+    ASSERT (a.shape[0] == b.shape[0]);
+    for (auto i : b.shape.indices())
+    {
+        ASSERT ( a[i] == int(b[i]) );
+        ASSERT ( typeid(a[i]) == typeid(int) );
+    }
+}
+
+DECLARE_TEST(copyValuesFrom_1Dim_1Dim_int_to_float)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    tensor<float> b = tensor<float>({10});
+    
+    b.copyValuesFrom(a);
+    ASSERT (b.ndim() == 1);
+    ASSERT (b.shape[0] == a.shape[0]);
+    for (auto i : b.shape.indices())
+    {
+        ASSERT ( a[i] == b[i] );
+        ASSERT ( typeid(a[i]) == typeid(int) );
+    }
+}
+
+DECLARE_TEST(copyValuesFrom_2Dim_1Dim_float_to_int)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    tensor<float> b = tensor<float>({10,2});
+    float i = 1.5;
+    b.apply([&i](float &a){a = i; i += 2,8;});
+    a.copyValuesFrom(b);
+    ASSERT (a.ndim() == 1);
+    ASSERT (a.shape[0] == b.shape[0]);
+    for (auto i = 0; i < 10; ++i)
+    {
+            ASSERT ( (a[{i}]) == int((b[{i,0}])) );
+            ASSERT ( typeid(a[i]) == typeid(int) );
+    }
+}
+
+DECLARE_TEST(copyValuesFrom_2Dim_1Dim_int_to_float)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    tensor<float> b = tensor<float>({10,2});
+    float i = 1.5;
+    b.apply([&i](float &a){a = i; i += 2,8;});
+    b.copyValuesFrom(a);
+    
+    ASSERT (a.ndim() == 1);
+    ASSERT (a.shape[0] == b.shape[0]);
+    for (auto i = 0; i < 10; ++i)
+    {
+        ASSERT ( (a[{i}]) == (b[{i,0}]) );
+        ASSERT ( typeid(b[i]) == typeid(float) );
+    }
+}
