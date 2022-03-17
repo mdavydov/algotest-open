@@ -19,10 +19,10 @@ DECLARE_TEST(myTest)
 int main()
 {
     LOGI_("Hello");
-    //algotest::TestBase::runAllTests();
+    algotest::TestBase::runAllTests();
     
-    tensor<int> a = tensor<int>::random({5},5,70);
-    LOGI_(a);
+//    tensor<int> a = tensor<int>::random({5},5,70);
+//    LOGI_(a);
 }
 
 

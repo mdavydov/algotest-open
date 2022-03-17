@@ -505,8 +505,8 @@ DECLARE_TEST(Multiple_1Dim_1Dim)
 
 DECLARE_TEST(Multiple_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
-    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     tensor<int> c = a*b;
     ASSERT(c.ndim() == 2);
     ASSERT(c.shape[0] == a.shape[0]);
@@ -521,8 +521,8 @@ DECLARE_TEST(Multiple_2Dim_1Dim)
 
 DECLARE_TEST(Multiple_1Dim_2Dim)
 {
-    tensor<int> a = tensor<int>({5,2}, initializer(5));
-    tensor<int> b = tensor<int>({5}, initializer(10));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     tensor<int> c = b*a;
     ASSERT(c.ndim() == 2);
     ASSERT(c.shape[0] == a.shape[0]);
@@ -537,8 +537,8 @@ DECLARE_TEST(Multiple_1Dim_2Dim)
 
 DECLARE_TEST(Devide_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>({10}, initializer(40));
-    tensor<int> b = tensor<int>({10}, initializer(5));
+    tensor<int> a = tensor<int>::random({10}, -50, 50);
+    tensor<int> b = tensor<int>::random({10}, -50, 50);
     tensor<int> c = a/b;
     ASSERT(c.ndim() == 1);
     ASSERT(c.shape[0] == a.shape[0]);
@@ -551,8 +551,8 @@ DECLARE_TEST(Devide_1Dim_1Dim)
 
 DECLARE_TEST(Devide_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>({5,2}, initializer(40));
-    tensor<int> b = tensor<int>({5}, initializer(5));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});;
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     tensor<int> c = a/b;
     ASSERT(c.ndim() == 2);
     ASSERT(c.shape[0] == a.shape[0]);
@@ -567,8 +567,8 @@ DECLARE_TEST(Devide_2Dim_1Dim)
 
 DECLARE_TEST(Devide_1Dim_2Dim)
 {
-    tensor<int> a = tensor<int>({5,2}, initializer(5));
-    tensor<int> b = tensor<int>({5}, initializer(10));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     tensor<int> c = b/a;
     ASSERT(c.ndim() == 2);
     ASSERT(c.shape[0] == a.shape[0]);
@@ -583,9 +583,9 @@ DECLARE_TEST(Devide_1Dim_2Dim)
 
 DECLARE_TEST(PlusEqual_tensors)
 {
-    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
-    tensor<int> b = tensor<int>({10,2}, initializer(5));
+    tensor<int> b = tensor<int>::random({10}, -50, 50).reshape({5,2});
     a+=b;
     
     
@@ -600,7 +600,7 @@ DECLARE_TEST(PlusEqual_tensors)
 
 DECLARE_TEST(PlusEqual_tensor_int)
 {
-    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
 
     a+=5;
@@ -616,9 +616,9 @@ DECLARE_TEST(PlusEqual_tensor_int)
 
 DECLARE_TEST(MinusEqual_tensors)
 {
-    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
-    tensor<int> b = tensor<int>({10,2}, initializer(5));
+    tensor<int> b = tensor<int>::random({10}, -50, 50).reshape({5,2});
     a-=b;
     ASSERT(a.ndim() == 2);
     ASSERT (a.shape[0] == a_copy.shape[0]);
@@ -630,9 +630,9 @@ DECLARE_TEST(MinusEqual_tensors)
     }
 }
 
-DECLARE_TEST(MinusEqual_int)
+DECLARE_TEST(MinusEqual_Tensor_int)
 {
-    tensor<int> a = tensor<int>({10,2}, initializer(40));
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
     a-=5;
     ASSERT(a.ndim() == 2);
@@ -647,9 +647,9 @@ DECLARE_TEST(MinusEqual_int)
 
 DECLARE_TEST(MultipleEqual_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5}, -50, 50);
     tensor<int> a_copy = a.copy();
-    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     a*=b;
     ASSERT(a.ndim() == 1);
     ASSERT(a.shape[0] == a_copy.shape[0]);
@@ -661,9 +661,9 @@ DECLARE_TEST(MultipleEqual_1Dim_1Dim)
 
 DECLARE_TEST(MultipleEqual_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
-    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     a*=b;
     ASSERT(a.ndim() == 2);
     ASSERT(a.shape[0] == a_copy.shape[0]);
@@ -678,7 +678,7 @@ DECLARE_TEST(MultipleEqual_2Dim_1Dim)
 
 DECLARE_TEST(MultipleEqual_1Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5}, -50, 50);
     tensor<int> a_copy = a.copy();
     a*=5;
     ASSERT(a.ndim() == 1);
@@ -691,7 +691,7 @@ DECLARE_TEST(MultipleEqual_1Dim_int)
 
 DECLARE_TEST(MultipleEqual_2Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
     a*=5;
     ASSERT(a.ndim() == 2);
@@ -707,9 +707,9 @@ DECLARE_TEST(MultipleEqual_2Dim_int)
 
 DECLARE_TEST(DevideEqual_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5}, -50, 50);
     tensor<int> a_copy = a.copy();
-    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     a/=b;
     ASSERT(a.ndim() == 1);
     ASSERT(a.shape[0] == a_copy.shape[0]);
@@ -721,9 +721,9 @@ DECLARE_TEST(DevideEqual_1Dim_1Dim)
 
 DECLARE_TEST(DevideEqual_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
-    tensor<int> b = tensor<int>::arange(5);
+    tensor<int> b = tensor<int>::random({5}, -50, 50);
     a/=b;
     ASSERT(a.ndim() == 2);
     ASSERT(a.shape[0] == a_copy.shape[0]);
@@ -738,7 +738,7 @@ DECLARE_TEST(DevideEqual_2Dim_1Dim)
 
 DECLARE_TEST(DevideEqual_1Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5}, -50, 50);
     tensor<int> a_copy = a.copy();
     a/=5;
     ASSERT(a.ndim() == 1);
@@ -751,7 +751,7 @@ DECLARE_TEST(DevideEqual_1Dim_int)
 
 DECLARE_TEST(DevideEqual_2Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}, -50, 50).reshape({5,2});
     tensor<int> a_copy = a.copy();
     a/=5;
     ASSERT(a.ndim() == 2);
@@ -767,8 +767,8 @@ DECLARE_TEST(DevideEqual_2Dim_int)
 
 DECLARE_TEST(Lesser_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10);
-    tensor<int> b = tensor<int>::ones({10});
+    tensor<int> a = tensor<int>::random({10});
+    tensor<int> b = tensor<int>::random({10});
     tensor<bool> c = (a<b);
     
     ASSERT(a.ndim() == 1);
@@ -781,8 +781,8 @@ DECLARE_TEST(Lesser_1Dim_1Dim)
 
 DECLARE_TEST(Lesser_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
-    tensor<int> b = tensor<int>::ones({5});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
+    tensor<int> b = tensor<int>::random({5});
     tensor<bool> c = (a<b);
     
     ASSERT(c.ndim() == 2);
@@ -798,7 +798,7 @@ DECLARE_TEST(Lesser_2Dim_1Dim)
 
 DECLARE_TEST(Lesser_1Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5});
 
     tensor<bool> c = (a<1);
     
@@ -813,7 +813,7 @@ DECLARE_TEST(Lesser_1Dim_int)
 
 DECLARE_TEST(Lesser_2Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
 
     tensor<bool> c = (a<1);
     
@@ -830,8 +830,8 @@ DECLARE_TEST(Lesser_2Dim_int)
 
 DECLARE_TEST(LesserEqual_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10);
-    tensor<int> b = tensor<int>::ones({10});
+    tensor<int> a = tensor<int>::random({10});
+    tensor<int> b = tensor<int>::random({10});
     tensor<bool> c = (a<=b);
     
     ASSERT(a.ndim() == 1);
@@ -844,8 +844,8 @@ DECLARE_TEST(LesserEqual_1Dim_1Dim)
 
 DECLARE_TEST(LesserEqual_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
-    tensor<int> b = tensor<int>::ones({5});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
+    tensor<int> b = tensor<int>::random({5});
     tensor<bool> c = (a<=b);
     
     ASSERT(c.ndim() == 2);
@@ -861,7 +861,7 @@ DECLARE_TEST(LesserEqual_2Dim_1Dim)
 
 DECLARE_TEST(LesserEqual_1Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5});
 
     tensor<bool> c = (a<=1);
     
@@ -876,7 +876,7 @@ DECLARE_TEST(LesserEqual_1Dim_int)
 
 DECLARE_TEST(LesserEqual_2Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
 
     tensor<bool> c = (a<=1);
     
@@ -893,8 +893,8 @@ DECLARE_TEST(LesserEqual_2Dim_int)
 
 DECLARE_TEST(Greater_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10);
-    tensor<int> b = tensor<int>::ones({10});
+    tensor<int> a = tensor<int>::random({10});
+    tensor<int> b = tensor<int>::random({10});
     tensor<bool> c = (a>b);
     
     ASSERT(c.shape == b.shape);
@@ -906,8 +906,8 @@ DECLARE_TEST(Greater_1Dim_1Dim)
 
 DECLARE_TEST(Greater_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
-    tensor<int> b = tensor<int>::ones({5});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
+    tensor<int> b = tensor<int>::random({5});
     tensor<bool> c = (a>b);
     
     ASSERT(c.ndim() == 2);
@@ -923,7 +923,7 @@ DECLARE_TEST(Greater_2Dim_1Dim)
 
 DECLARE_TEST(Greater_1Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10);
+    tensor<int> a = tensor<int>::random({10});
 
     tensor<bool> c = (a>1);
     
@@ -938,7 +938,7 @@ DECLARE_TEST(Greater_1Dim_int)
 
 DECLARE_TEST(Greater_2Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
 
     tensor<bool> c = (a>1);
     
@@ -955,8 +955,8 @@ DECLARE_TEST(Greater_2Dim_int)
 
 DECLARE_TEST(GreaterEqual_1Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10);
-    tensor<int> b = tensor<int>::ones({10});
+    tensor<int> a = tensor<int>::random({10});
+    tensor<int> b = tensor<int>::random({10});
     tensor<bool> c = (a>=b);
     
     ASSERT(c.shape == b.shape);
@@ -968,7 +968,7 @@ DECLARE_TEST(GreaterEqual_1Dim_1Dim)
 
 DECLARE_TEST(GreaterEqual_2Dim_1Dim)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
     tensor<int> b = tensor<int>::ones({5});
     tensor<bool> c = (a>=b);
     
@@ -985,7 +985,7 @@ DECLARE_TEST(GreaterEqual_2Dim_1Dim)
 
 DECLARE_TEST(GreaterEqual_1Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(5);
+    tensor<int> a = tensor<int>::random({5});
 
     tensor<bool> c = (a>=1);
     
@@ -1000,8 +1000,7 @@ DECLARE_TEST(GreaterEqual_1Dim_int)
 
 DECLARE_TEST(GreaterEqual_2Dim_int)
 {
-    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
-
+    tensor<int> a = tensor<int>::random({10}).reshape({5,2});
     tensor<bool> c = (a>=1);
     
     ASSERT(c.ndim() == 2);
