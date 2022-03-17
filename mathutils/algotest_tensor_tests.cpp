@@ -1202,3 +1202,63 @@ DECLARE_TEST(copyValuesFrom_2Dim_1Dim_int_to_float)
         ASSERT ( typeid(b[i]) == typeid(float) );
     }
 }
+
+DECLARE_TEST(Mean_1Dim_int)
+{
+    tensor<int> a = tensor<int>::random({10}, -5, 5);
+    int sum = 0;
+    
+    a.apply([&sum](int i){ sum += i;});
+    ASSERT (a.mean(0)[0] == int(sum / 10));
+}
+
+DECLARE_TEST(Mean_2Dim_int)
+{
+    tensor<int> a = tensor<int>::random({10}, -5, 5).reshape({5,2});
+    
+    int sum00 = 0;
+    int sum01 = 0;
+    for(int i = 0; i < 5; ++i)
+    {
+        int sum = 0;
+        sum00 += a[{i,0}];
+        sum01 += a[{i,1}];
+        for(int j = 0; j < 2; ++j)
+        {
+            sum += a[{i,j}];
+        }
+        ASSERT(a.mean(1)[{i}] == int(sum/2));
+    }
+    ASSERT(a.mean(0)[{0}] == int(sum00/5));
+    ASSERT(a.mean(0)[{1}] == int(sum01/5));
+}
+
+DECLARE_TEST(Mean_1Dim_float)
+{
+    tensor<float> a = tensor<float>::random({10}, -5, 5);
+    float sum = 0;
+    
+    a.apply([&sum](float i){ sum += i;});
+    ASSERT (a.mean(0)[0] == sum / 10);
+}
+
+DECLARE_TEST(Mean_2Dim_float)
+{
+    tensor<float> a = tensor<float>::random({10}, -5, 5).reshape({5,2});
+    
+    float sum00 = 0;
+    float sum01 = 0;
+    for(int i = 0; i < 5; ++i)
+    {
+        float sum = 0;
+        sum00 += a[{i,0}];
+        sum01 += a[{i,1}];
+        for(int j = 0; j < 2; ++j)
+        {
+            sum += a[{i,j}];
+        }
+        ASSERT(a.mean(1)[{i}] == sum/2);
+    }
+    ASSERT(a.mean(0)[{0}] == sum00/5);
+    ASSERT(a.mean(0)[{1}] == sum01/5);
+}

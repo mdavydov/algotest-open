@@ -486,10 +486,18 @@ namespace algotest
         template<class U=T>
         vtensor<U> sum_last_axes(int num_last_dims) const
         {
-            // apply_parallel requires num_last_dims<ndim()
-            ASSERT(num_last_dims>=0 && num_last_dims<ndim());
+            ASSERT(num_last_dims>=0 && num_last_dims<=ndim());
+            
             vtensor<U> res( shape.first(ndim()-num_last_dims), initializer<U>(0.0) );
-            apply_parallel( res.replicateValues( shape.last(num_last_dims) ), [](const T& a, U& sum) {sum += a;} );
+
+            if (num_last_dims<ndim())
+            {
+                apply_parallel( res.replicateValues( shape.last(num_last_dims) ), [](const T& a, U& sum) {sum += a;} );
+            }
+            else
+            {
+                apply( res.replicateValues( shape.last(num_last_dims) ), [](const T& a, U& sum) {sum += a;} );
+            }
             return res;
         }
         

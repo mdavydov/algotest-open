@@ -246,7 +246,7 @@ namespace algotest
         
         tensor_shape first(int n) const
         {
-            ASSERT(n>0 && n<=ndim());
+            ASSERT(n>=0 && n<=ndim());
             return tensor_shape( n, shape_ptr());
         }
         tensor_shape last(int n) const
