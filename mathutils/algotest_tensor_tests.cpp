@@ -1013,3 +1013,127 @@ DECLARE_TEST(GreaterEqual_2Dim_int)
             ASSERT((c[{i,j}]) == (a[{i,j}]) >= 1 );
         }
 }
+
+
+DECLARE_TEST(Astype_1Dim_1Dim_int_int)
+{
+    tensor<int> a = tensor<int>::random({5},-5,5);
+    tensor<int> b = a.astype<int>();
+    
+    ASSERT(b.ndim() == 1);
+    ASSERT(b.shape[0] == a.shape[0]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == int(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(int) );
+    }
+}
+
+DECLARE_TEST(Astype_2Dim_1Dim_int_int)
+{
+    tensor<int> a = tensor<int>::random({10},-5,5).reshape({5,2});
+    tensor<int> b = a.astype<int>();
+    
+    ASSERT(b.ndim() == 2);
+    ASSERT(b.shape[0] == a.shape[0]);
+    ASSERT(b.shape[1] == a.shape[1]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == int(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(int) );
+    }
+}
+
+DECLARE_TEST(Astype_1Dim_1Dim_float_float)
+{
+    tensor<float> a = tensor<float>::random({5},-5,5);
+    tensor<float> b = a.astype<float>();
+    
+    ASSERT(b.ndim() == 1);
+    ASSERT(b.shape[0] == a.shape[0]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == float(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(float) );
+    }
+}
+
+DECLARE_TEST(Astype_2Dim_1Dim_float_float)
+{
+    tensor<float> a = tensor<float>::random({10},-5,5).reshape({5,2});
+    tensor<float> b = a.astype<float>();
+    
+    ASSERT(b.ndim() == 2);
+    ASSERT(b.shape[0] == a.shape[0]);
+    ASSERT(b.shape[1] == a.shape[1]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == float(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(float) );
+    }
+}
+
+DECLARE_TEST(Astype_1Dim_1Dim_int_float)
+{
+    tensor<int> a = tensor<int>::random({5},-5,5);
+    tensor<float> b = a.astype<float>();
+    
+    ASSERT(b.ndim() == 1);
+    ASSERT(b.shape[0] == a.shape[0]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == float(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(float) );
+    }
+}
+
+DECLARE_TEST(Astype_2Dim_1Dim_int_float)
+{
+    tensor<int> a = tensor<int>::random({10},-5,5).reshape({5,2});
+    tensor<float> b = a.astype<float>();
+    
+    ASSERT(b.ndim() == 2);
+    ASSERT(b.shape[0] == a.shape[0]);
+    ASSERT(b.shape[1] == a.shape[1]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == int(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(float) );
+    }
+}
+
+DECLARE_TEST(Astype_1Dim_1Dim_float_int)
+{
+    tensor<float> a = tensor<float>::random({5},1,10);
+    tensor<int> b = a.astype<int>();
+    
+    ASSERT(b.ndim() == 1);
+    ASSERT(b.shape[0] == a.shape[0]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == int(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(int) );
+    }
+}
+
+DECLARE_TEST(Astype_2Dim_2Dim_float_int)
+{
+    tensor<float> a = tensor<float>::random({10}, 1, 10).reshape({5,2});
+    tensor<int> b = a.astype<int>();
+
+    ASSERT(b.ndim() == 2);
+    ASSERT(b.shape[0] == a.shape[0]);
+    
+    for(auto i : b.shape.indices())
+    {
+        ASSERT ( b[i] == int(a[i]) );
+        ASSERT ( typeid(b[i]) == typeid(int));
+    }
+}
