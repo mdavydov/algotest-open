@@ -1262,3 +1262,83 @@ DECLARE_TEST(Mean_2Dim_float)
     ASSERT(a.mean(0)[{0}] == sum00/5);
     ASSERT(a.mean(0)[{1}] == sum01/5);
 }
+
+DECLARE_TEST(SUM_no_args_1Dim_int)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    int i = 0;
+    a.apply([&i](int t){i+=t;} );
+    ASSERT(i == a.sum());
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == 10);
+}
+
+DECLARE_TEST(SUM_no_args_2Dim_int)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    int i = 0;
+    a.apply([&i](int t){i+=t;} );
+    ASSERT(i == a.sum());
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == 5);
+    ASSERT(a.shape[1] == 2);
+}
+
+DECLARE_TEST(SUM_no_args_1Dim_float)
+{
+    tensor<float> a = tensor<float>::random({10}, -5,5);
+    float i = 0;
+    a.apply([&i](float t){i+=t;} );
+    ASSERT(i == a.sum());
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == 10);
+}
+
+DECLARE_TEST(SUM_no_args_2Dim_float)
+{
+    tensor<float> a = tensor<float>::random({10}, -5, 5).reshape({5,2});
+    float i = 0;
+    a.apply([&i](float t){i+=t;} );
+    ASSERT(i == a.sum());
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == 5);
+    ASSERT(a.shape[1] == 2);
+}
+
+DECLARE_TEST(SUM_Axes_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(10);
+    int sum_axes = 0;
+    for(int i = 0; i < 10; ++i)
+    {
+        sum_axes += a[{i}];
+    }
+    ASSERT( sum_axes == a.sum(0)[0] );
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == 10);
+}
+
+DECLARE_TEST(SUM_Axes_2Dim)
+{
+    tensor<int> a = tensor<int>::arange(10).reshape({5,2});
+    int sum_axes0 = 0;
+    int sum_axes1 = 0;
+    for(int i = 0; i < 5; ++i)
+    {
+        int sum = 0;
+        sum_axes0 += a[{i,0}];
+        sum_axes1 += a[{i,1}];
+        for(int j = 0; j < 2; ++j)
+        {
+            sum+=a[{i,j}];
+        }
+        ASSERT(sum == a.sum(1)[{i}]);
+    }
+    
+    ASSERT(sum_axes0 == a.sum(0)[{0}]);
+    ASSERT(sum_axes1 == a.sum(0)[{1}]);
+    
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == 5);
+    ASSERT(a.shape[1] == 2);
+}
