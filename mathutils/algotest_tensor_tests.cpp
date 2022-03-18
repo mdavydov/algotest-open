@@ -1342,3 +1342,80 @@ DECLARE_TEST(SUM_Axes_2Dim)
     ASSERT(a.shape[0] == 5);
     ASSERT(a.shape[1] == 2);
 }
+
+DECLARE_TEST(sum_las_axes_1Dim)
+{
+    tensor<int> a = tensor<int>::arange(4);
+    tensor<int> res1 = a.sum_last_axes(1);
+    
+    ASSERT(a.ndim() == 1);
+    ASSERT(a.shape[0] == 4);
+    
+    int i = 0;
+    a.apply([&i](int t) {i+=t;});
+
+    ASSERT(i == res1[0]);
+}
+
+DECLARE_TEST(sum_las_axes_2Dim)
+{
+    tensor<int> a = tensor<int>::arange(4).reshape({2,2});
+    tensor<int> res1 = a.sum_last_axes(1);
+    tensor<int> res2 = a.sum_last_axes(2);
+    
+    ASSERT(a.ndim() == 2);
+    ASSERT(a.shape[0] == 2);
+    ASSERT(a.shape[1] == 2);
+    
+    int i = 0;
+    a.apply([&i](int t) {i+=t;});
+    ASSERT(i == res2[0]);
+    
+    int sum1 = 0;
+    int sum2 = 0;
+    for(int i = 0; i < 2; ++i)
+    {
+        sum1 += a[{0,i}];
+        sum2 += a[{1,i}];
+    }
+    ASSERT(sum1 == res1[{0}]);
+    ASSERT(sum2 == res1[{1}]);
+}
+
+DECLARE_TEST(sum_las_axes_3Dim)
+{
+    tensor<int> a = tensor<int>::arange(8).reshape({2,2,2});
+    tensor<int> res_three = a.sum_last_axes(3);
+    int i = 0;
+    a.apply([&i](int t) {i+=t;});
+    ASSERT(res_three[0] == i);
+    
+    tensor<int> res_two = a.sum_last_axes(2);
+    int i_two_x0 = 0;
+    int i_two_x1 = 0;
+    for(int i = 0; i < 2; ++i)
+    {
+        for(int j = 0; j < 2; ++j)
+        {
+            i_two_x0 += a[{0,i,j}];
+            i_two_x1 += a[{1,i,j}];
+        }
+    }
+    ASSERT(res_two[0] == i_two_x0);
+    ASSERT(res_two[{1}] == i_two_x1);
+    
+    tensor<int> res_one = a.sum_last_axes(1).reshape({4});
+    
+    ASSERT( res_one[{0}] == (a[{0,0,0}] + a[{0,0,1}]) );
+    ASSERT( res_one[{1}] == (a[{0,1,0}] + a[{0,1,1}]) );
+    ASSERT( res_one[{2}] == (a[{1,0,0}] + a[{1,0,1}]) );
+    ASSERT( res_one[{3}] == (a[{1,1,0}] + a[{1,1,1}]) );
+    
+    ASSERT(a.ndim() == 3);
+    ASSERT(a.shape[0] == 2);
+    ASSERT(a.shape[1] == 2);
+    ASSERT(a.shape[2] == 2);
+    ASSERT(res_one.ndim() == 1);
+    ASSERT(res_one.shape[0] == 4);
+    
+}

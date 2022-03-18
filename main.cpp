@@ -13,16 +13,22 @@ DECLARE_TEST(myTest)
     b.apply([&i](int& a) {a = i; i += 5; });
 
     LOGI_(b);
-    STOP_TESTS();
+ //   STOP_TESTS();
 }
+
+
 
 int main()
 {
-    LOGI_("Hello");
-    algotest::TestBase::runAllTests();
+    tensor<int> a = tensor<int>::arange(8).reshape({2,2,2});
+    LOGI_(a);
     
-//    tensor<int> a = tensor<int>::random({5},5,70);
-//    LOGI_(a);
+    LOGI_(a.sum_last_axes(2));
+    
+    LOGI_(a.sum(2));
+    
+    
+    algotest::TestBase::runAllTests();
 }
 
 
